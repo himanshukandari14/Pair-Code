@@ -4,6 +4,7 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "build": "node src/server.js build",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },
