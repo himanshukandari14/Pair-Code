@@ -8,6 +8,8 @@ import cors from "cors"
 import { clerkMiddleware } from "@clerk/express";
 import { protectRoute } from "./middleware/protectRoute.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import sessionRoutes from "./routes/sessionRoutes.js";
+
 
 const app = express();
 
@@ -23,6 +25,8 @@ const PORT=ENV.PORT;
 app.use("/api/inngest",serve({ client: inngest, functions}));
 
 app.use("/api/chat", chatRoutes)
+app.use("/api/session", chatRoutes)
+
 
 app.get("/",(req,res)=>{
     res.send("hellos");
