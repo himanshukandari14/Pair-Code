@@ -72,7 +72,7 @@ const stats = [
 
 const testimonials = [
   {
-    quote: "peer-code made our technical interviews 3× faster. The real-time code sync is flawless.",
+    quote: "pair-code made our technical interviews 3× faster. The real-time code sync is flawless.",
     author: "Sarah K.",
     role: "Engineering Lead @ Stripe",
     avatar: "SK",
@@ -86,7 +86,7 @@ const testimonials = [
     color: "from-amber-500 to-orange-600",
   },
   {
-    quote: "I landed my dream job after 3 weeks of practice sessions on peer-code. Worth every minute.",
+    quote: "I landed my dream job after 3 weeks of practice sessions on pair-code. Worth every minute.",
     author: "Priya D.",
     role: "Frontend Dev @ Figma",
     avatar: "PD",
@@ -112,7 +112,7 @@ export default function HomePage() {
           <div className="flex items-center gap-3">
             <img src='./logo.svg' />
             <div>
-              <span className="text-base font-semibold tracking-tight text-white">peer-code</span>
+              <span className="text-base font-semibold tracking-tight text-white">pair-code</span>
             </div>
           </div>
 
@@ -336,7 +336,7 @@ export default function HomePage() {
             Ready to Ace Your Next Interview?
           </h2>
           <p className="text-lg text-zinc-400">
-            Join 12,000+ engineers already practicing on peer-code. No credit card needed.
+            Join 12,000+ engineers already practicing on pair-code. No credit card needed.
           </p>
           <SignInButton mode="modal">
             <Button size="xl" variant="default" className="mx-auto">
@@ -354,9 +354,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-500">
           <div className="flex items-center gap-2">
             <svg className="size-4" viewBox="0 0 76 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#71717A" /></svg>
-            <span className="font-semibold text-zinc-300">peer-code</span>
+            <span className="font-semibold text-zinc-300">pair-code</span>
           </div>
-          <span>© 2026 peer-code. All rights reserved.</span>
+          <span>© 2026 pair-code. All rights reserved.</span>
         </div>
       </footer>
     </div>

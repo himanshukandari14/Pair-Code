@@ -11,8 +11,8 @@ function Navbar() {
     <nav className="bg-black/60 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-zinc-100 hover:text-white transition-colors">
-          <img src="/logo.svg" alt="peer-code logo" className="w-7 h-7" />
-          <span className="font-semibold text-sm tracking-tight">peer-code</span>
+          <img src="/logo.svg" alt="pair-code logo" className="w-7 h-7" />
+          <span className="font-semibold text-sm tracking-tight">pair-code</span>
         </Link>
 
         <div className="flex items-center gap-1">

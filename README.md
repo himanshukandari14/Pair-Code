@@ -1,4 +1,4 @@
-# Talent Hunt (peer-code)
+# Talent Hunt (pair-code)
 
 A real-time collaborative coding and video interview platform. Host or join coding sessions with live video calls, shared code editor, and in-session chat.
 
