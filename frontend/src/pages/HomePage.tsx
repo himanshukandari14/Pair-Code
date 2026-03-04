@@ -6,29 +6,18 @@ import {
   UsersIcon,
   PhoneCallIcon,
   MicOffIcon,
-  MoreHorizontalIcon,
-  RefreshCwIcon,
-  PhoneOffIcon,
   CheckIcon,
   ZapIcon,
   StarIcon,
   ShieldCheckIcon,
   TimerIcon,
   TrendingUpIcon,
-  SparklesIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 /* ─── Mock data ─── */
-const interviewers = [
-  { name: "Michael Johnson", handle: "@SunnyMichael", status: "invite", avatar: "MJ", color: "from-amber-500 to-orange-600" },
-  { name: "Sophia Williams", handle: "@MysticWilliams", status: "invited", avatar: "SW", color: "from-rose-500 to-orange-500" },
-  { name: "James Smith", handle: "@TechGuru99", status: "invite", avatar: "JS", color: "from-orange-600 to-red-600" },
-  { name: "Olivia Brown", handle: "@CreativeOlBr", status: "invite", avatar: "OB", color: "from-amber-400 to-orange-500" },
-];
-
 const featureCards = [
   {
     icon: VideoIcon,
@@ -104,165 +93,6 @@ const testimonials = [
     color: "from-rose-500 to-orange-500",
   },
 ];
-
-/* ─── Sub-components ─── */
-
-function MockVideoCallCard() {
-  return (
-    <div className="relative w-full max-w-sm mx-auto">
-      {/* Glow behind phone */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-600/40 to-red-800/30 rounded-3xl blur-3xl scale-110" />
-
-      {/* Phone shell */}
-      <div className="phone-frame relative overflow-hidden rounded-[2.5rem] aspect-[9/19] w-72 mx-auto p-2 animate-float">
-        {/* Screen */}
-        <div className="relative h-full rounded-[2rem] overflow-hidden bg-gradient-to-b from-orange-600 via-orange-500 to-amber-400">
-          {/* Caller fill photo placeholder */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="size-48 rounded-full bg-gradient-to-br from-amber-300 to-orange-600 opacity-60 blur-2xl absolute top-10" />
-            <div className="w-full h-full bg-gradient-to-b from-orange-500/60 to-orange-700/80" />
-          </div>
-
-          {/* Smiling avatar silhouette */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4">
-            <div className="relative size-36">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-200 to-orange-400" />
-              {/* Face */}
-              <div className="absolute inset-3 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-end justify-center overflow-hidden pb-2">
-                <div className="text-5xl">😊</div>
-              </div>
-              {/* Glow ring */}
-              <div className="absolute -inset-2 rounded-full border-2 border-white/20" />
-            </div>
-          </div>
-
-          {/* Status bar */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-white/80 text-xs font-medium">
-            <span>9:41</span>
-            <div className="flex gap-1.5">
-              <div className="size-3 rounded-full bg-white/40" />
-              <div className="size-3 rounded-full bg-white/40" />
-            </div>
-          </div>
-
-          {/* Back arrow */}
-          <button className="absolute top-10 left-4 size-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
-            <ArrowRightIcon className="size-4 text-white rotate-180" />
-          </button>
-
-          {/* Caller info card */}
-          <div className="absolute bottom-4 left-3 right-3 call-card p-3">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="size-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                EC
-              </div>
-              <div className="flex-1">
-                <div className="text-white font-semibold text-sm">Emily Carter</div>
-                <div className="text-orange-300 text-xs">Calling…</div>
-              </div>
-              <span className="text-white/60 text-xs font-mono">02:15</span>
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center justify-between">
-              {[MoreHorizontalIcon, RefreshCwIcon, VideoIcon, MicOffIcon].map((Icon, i) => (
-                <button
-                  key={i}
-                  className="size-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center hover:bg-white/20 transition-colors"
-                >
-                  <Icon className="size-4 text-white/80" />
-                </button>
-              ))}
-              <button className="size-10 rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition-colors glow-orange-sm">
-                <PhoneOffIcon className="size-4 text-white" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MockInvitePanel() {
-  return (
-    <div className="call-card p-4 w-full max-w-[280px] animate-slide-in-right delay-300">
-      {/* Search bar */}
-      <div className="flex items-center gap-2 mb-4">
-        <div className="flex-1 bg-white/8 border border-white/10 rounded-xl px-3 py-2 text-sm text-white/50">
-          Search…
-        </div>
-        <button className="size-8 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/15 transition-colors">
-          <span className="text-white/60 text-xl leading-none relative -top-0.5">×</span>
-        </button>
-      </div>
-
-      {/* Contacts */}
-      <div className="space-y-2">
-        {interviewers.map((p, i) => (
-          <div key={i} className="invite-card flex items-center gap-3 p-2.5">
-            <div className={`size-9 rounded-full bg-gradient-to-br ${p.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
-              {p.avatar}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-white text-sm font-medium truncate">{p.name}</div>
-              <div className="text-white/40 text-xs">{p.handle}</div>
-            </div>
-            <button
-              className={`text-xs font-semibold px-3 py-1 rounded-full transition-all ${p.status === "invited"
-                ? "bg-foreground text-background"
-                : "bg-white/10 text-white/80 hover:bg-orange-500/20 hover:text-orange-400 border border-white/10"
-                }`}
-            >
-              {p.status === "invited" ? "Invited" : "Invite"}
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MockIncomingCallCard() {
-  return (
-    <div
-      className="relative overflow-hidden rounded-3xl p-5 flex items-center gap-4 animate-slide-in-right delay-500"
-      style={{
-        background: "linear-gradient(135deg, #c0391b 0%, #e85d1a 40%, #f97316 70%, #fb923c 100%)",
-        boxShadow: "0 20px 60px rgba(192,57,27,0.5), 0 0 0 1px rgba(255,255,255,0.1)",
-      }}
-    >
-      {/* Swirling orb bg */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-8 -right-8 size-40 rounded-full bg-white/5 blur-2xl" />
-        <div className="absolute -bottom-8 -left-4 size-32 rounded-full bg-black/10 blur-xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-60 rounded-full border border-white/5" />
-      </div>
-
-      <div className="relative size-14 shrink-0">
-        <div className="size-14 rounded-full bg-gradient-to-br from-amber-300 to-orange-500 border-2 border-white/30 flex items-center justify-center text-white font-bold text-sm">
-          EC
-        </div>
-        {/* Pulse ring */}
-        <div className="absolute inset-0 rounded-full border-2 border-white/40 animate-pulse-ring" />
-      </div>
-
-      <div className="relative flex-1">
-        <div className="text-white font-bold text-base">Emily Carter</div>
-        <div className="text-white/60 text-sm">@DesignerEm</div>
-      </div>
-
-      <div className="relative flex gap-2">
-        <button className="size-12 rounded-full bg-red-500 flex items-center justify-center shadow-lg hover:bg-red-600 transition-all hover:scale-105">
-          <PhoneOffIcon className="size-5 text-white" />
-        </button>
-        <button className="size-12 rounded-full bg-green-500 flex items-center justify-center shadow-lg hover:bg-green-600 transition-all hover:scale-105">
-          <PhoneCallIcon className="size-5 text-white" />
-        </button>
-      </div>
-    </div>
-  );
-}
 
 /* ─── Main Page ─── */
 export default function HomePage() {
@@ -353,7 +183,7 @@ export default function HomePage() {
 
             {/* Stats strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 animate-fade-up delay-500">
-              {stats.map(({ value, label, icon: Icon }) => (
+              {stats.map(({ value, label }) => (
                 <div key={label} className="rounded-lg p-4 text-center border border-zinc-800 bg-[#0A0A0A] hover:bg-zinc-900/50 transition-colors group">
                   <div className="text-2xl font-semibold text-white tracking-tight">{value}</div>
                   <div className="text-xs text-zinc-500 mt-1">{label}</div>

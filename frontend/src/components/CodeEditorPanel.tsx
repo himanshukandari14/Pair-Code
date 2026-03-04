@@ -107,10 +107,12 @@ function CodeEditorPanel({
     const updateCursorLabels = () => {
       const states = yProvider.awareness.getStates();
       let css = "";
+      const awareness = yProvider.awareness as unknown as Awareness & { clientID: number };
 
       states.forEach((state, clientId) => {
-        if (clientId === yProvider.awareness.clientID) return; // skip self
-        const user = state?.user as { name?: string; color?: string } | undefined;
+        if (clientId === awareness.clientID) return; // skip self
+        const stateObj = state as Record<string, unknown>;
+        const user = stateObj?.user as { name?: string; color?: string } | undefined;
         if (!user) return;
 
         const name = user.name || "Anonymous";
