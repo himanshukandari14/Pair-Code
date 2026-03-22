@@ -96,34 +96,59 @@ function SessionPage() {
   const roomId = id ? `talent-hunt-session-${id}` : null;
 
   return (
-    <div className="h-screen bg-black flex flex-col text-zinc-100">
-      <Navbar />
+    <div className="h-screen bg-[#020202] text-zinc-100 font-inter flex flex-col relative overflow-hidden">
+      <style>
+      {`
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Bodoni+Moda:ital,opsz,wght@1,6..122,400;1,6..122,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
+        .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.02em; }
+        .font-bodoni { font-family: 'Bodoni Moda', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .bg-dots {
+          background-size: 32px 32px;
+          background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+      `}
+      </style>
 
-      <div className="flex-1 overflow-hidden">
+      {/* Grid Background */}
+      <div className="absolute inset-0 pointer-events-none z-0 bg-dots" 
+           style={{ maskImage: 'radial-gradient(circle at 50% 10%, black, transparent 80%)', WebkitMaskImage: 'radial-gradient(circle at 50% 10%, black, transparent 80%)' }} />
+
+      {/* Ambient Flare */}
+      <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-yellow-400/5 blur-[150px] pointer-events-none z-0 mix-blend-screen" />
+
+      <div className="relative z-10 w-full shrink-0">
+        <Navbar />
+      </div>
+
+      <div className="flex-1 overflow-hidden relative z-10">
         <Group orientation="horizontal">
           {/* LEFT: Code editor + Output */}
           <Panel defaultSize={50} minSize={30}>
             <div className="h-full flex flex-col border-r border-zinc-800">
               {/* Room header - refined */}
-              <div className="flex items-center justify-between px-4 py-2.5 bg-black/50 border-b border-zinc-800/80 shrink-0">
+              <div className="flex items-center justify-between px-4 py-3 bg-[#020202] border-b border-white/5 shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <h1 className="text-sm font-medium text-zinc-300">Room</h1>
+                    <span className="inline-block w-2 h-2 rounded-none bg-yellow-400 animate-pulse" />
+                    <h1 className="font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-300">SESSION_ACTIVE</h1>
                   </div>
-                  <span className="text-zinc-600">·</span>
-                  <span className="text-xs text-zinc-500">
-                    Host: {session?.host?.name ?? "…"} · {session?.participant ? "2/2" : "1/2"} participants
+                  <span className="text-zinc-700">|</span>
+                  <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
+                    HOST: {session?.host?.name ?? "…"} · {session?.participant ? "2/2" : "1/2"} ACTORS
                   </span>
                   {isHost && session?.status === "active" && (
                     <button
                       type="button"
                       onClick={handleCopyInviteLink}
-                      className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-200 transition-colors px-2 py-1 rounded-md hover:bg-white/5"
+                      className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-yellow-400 transition-colors px-2 py-1 rounded-none hover:bg-yellow-400/10"
                       title="Copy invite link"
                     >
-                      <LinkIcon className="size-3.5" />
-                      Copy link
+                      <LinkIcon className="size-3" />
+                      COPY_LINK
                     </button>
                   )}
                 </div>
@@ -131,14 +156,14 @@ function SessionPage() {
                   <button
                     onClick={handleEndSession}
                     disabled={endSessionMutation.isPending}
-                    className="inline-flex items-center gap-2 rounded-lg text-xs font-medium px-3 py-2 bg-red-500/15 text-red-400 hover:bg-red-500/25 border border-red-500/25 transition-colors"
+                    className="inline-flex items-center gap-2 rounded-none font-mono text-[10px] uppercase font-bold tracking-widest px-4 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20 transition-colors"
                   >
                     {endSessionMutation.isPending ? (
-                      <Loader2Icon className="size-3.5 animate-spin" />
+                      <Loader2Icon className="size-3 animate-spin" />
                     ) : (
-                      <LogOutIcon className="size-3.5" />
+                      <LogOutIcon className="size-3" />
                     )}
-                    End room
+                    TERMINATE
                   </button>
                 )}
               </div>

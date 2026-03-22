@@ -1,456 +1,404 @@
 import { SignInButton } from "@clerk/clerk-react";
-import { motion, useScroll, useSpring } from "framer-motion";
-import type { Variants } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import {
-  ArrowRight, Video, Code2, Users, Shield, Clock, LineChart, Target, Zap, Command
+  Video, Code2, Shield, MessageSquare, ChevronRight,
+  Zap, Mic, Target, Command
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-/* ─── Mock data ─── */
-const featureCards = [
-  { icon: Video, title: "HD Video Calls", desc: "No lag, zero friction. See every expression, every reaction instantly." },
-  { icon: Code2, title: "Live Code Editor", desc: "Collaborate with real-time sync, syntax highlighting, and 40+ languages." },
-  { icon: Users, title: "Smart Matching", desc: "Pair precisely with peers by skill level, stack, and availability." },
-  { icon: Shield, title: "Secure Sessions", desc: "End-to-end encryption. Your code and ideas stay completely private." },
-  { icon: Clock, title: "Timed Pressure", desc: "Simulate real interview conditions with built-in countdown timers." },
-  { icon: LineChart, title: "Deep Analytics", desc: "Post-session insights, performance charts, and personal growth data." }
+const features = [
+  { icon: Code2, title: "Collaborative Editor", desc: "Real-time sync powered by Liveblocks & Yjs with Monaco. Execute JavaScript, Python, and Java instantly via Judge0." },
+  { icon: Video, title: "HD Video & Audio", desc: "Crystal clear video via Stream SDK. Includes screen share, reactions, full recording, and live camera toggles." },
+  { icon: MessageSquare, title: "Integrated Chat", desc: "In-session messaging powered by Stream Chat with real-time participation updates and join/leave sounds." },
+  { icon: Shield, title: "Secure Sessions", desc: "1-on-1 private rooms with 1 host and 1 participant. Protected by JWT auth and Clerk user synchronization." },
 ];
-
-const stats = [
-  { value: "12K+", label: "Engineers" },
-  { value: "60K+", label: "Sessions" },
-  { value: "4.9", label: "Rating" },
-  { value: "99%", label: "Uptime" },
-];
-
-const steps = [
-  { step: "01", title: "Create Profile", desc: "Set your stack, level, and availability in 30 seconds." },
-  { step: "02", title: "Match & Prep", desc: "Our AI finds the perfect match. Connect instantly." },
-  { step: "03", title: "Code & Conquer", desc: "Jump into a video call with a live code editor." },
-];
-
-const testimonials = [
-  { quote: "It completely transformed how we evaluate engineers. Fast, reliable, and incredibly sharp.", author: "Sarah K.", role: "Engineering Lead @ Stripe", avatar: "SK" },
-  { quote: "The interface is pure focus. No distractions, just you, the candidate, and the code.", author: "Rajan M.", role: "SWE @ Google", avatar: "RM" },
-  { quote: "I landed my dream job after practicing here. The timed pressure is exactly like the real thing.", author: "Priya D.", role: "Frontend Dev @ Figma", avatar: "PD" },
-];
-
-// Reusable Variants
-const fadeUpVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-
-const staggerContainer: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
 
 export default function HomePage() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const [scrolled, setScrolled] = useState(false);
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <>
-      {/* Dynamic Font Styling injected locally for the mind blowing typographic effect */}
+    <div className="min-h-screen bg-[#020202] text-zinc-100 font-inter selection:bg-yellow-400 selection:text-black overflow-hidden relative">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
-
+          @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Bodoni+Moda:ital,opsz,wght@1,6..122,400;1,6..122,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+          
           .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.02em; }
-          .font-playfair { font-family: 'Playfair Display', serif; }
-          .font-mono-space { font-family: 'Space Mono', monospace; }
+          .font-anton { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+          .font-bodoni { font-family: 'Bodoni Moda', serif; }
+          .font-inter { font-family: 'Inter', sans-serif; }
+          .font-mono { font-family: 'JetBrains Mono', monospace; }
+          
+          .bg-dots {
+            background-size: 32px 32px;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+          }
+          
+          .glass-panel {
+            background: rgba(10, 10, 10, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          
+          .text-stroke-yellow {
+            -webkit-text-stroke: 1.5px #facc15;
+            color: transparent;
+          }
+
+          .text-stroke-white {
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.1);
+            color: transparent;
+          }
+
+          .glow-yellow {
+            text-shadow: 0 0 30px rgba(250, 204, 21, 0.4);
+          }
+          
+          .box-glow {
+            box-shadow: 0 0 50px -15px rgba(250, 204, 21, 0.2);
+          }
 
           .marquee-content {
             display: inline-flex;
-            animation: marquee 30s linear infinite;
+            animation: marquee 40s linear infinite;
           }
           @keyframes marquee {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
           }
-          
-          .animate-spin-slow {
-            animation: spin 20s linear infinite;
-          }
-          @keyframes spin {
-            100% { transform: rotate(360deg); }
-          }
-
-          .text-stroke-yellow {
-            -webkit-text-stroke: 1.5px #facc15;
-            color: transparent;
-          }
         `}
       </style>
 
-      <div className="min-h-screen bg-[#070707] text-zinc-100 font-sans selection:bg-yellow-400 selection:text-black overflow-hidden relative">
-        {/* Scroll Progress */}
-        <motion.div className="fixed top-0 left-0 right-0 h-1.5 bg-yellow-400 transform origin-left z-50 mix-blend-difference" style={{ scaleX }} />
+      {/* Progress Bar */}
+      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-yellow-400 transform origin-left z-[100] mix-blend-difference" style={{ scaleX }} />
 
-        {/* Subtle Matte Background Pattern */}
-        <div 
-          className="fixed inset-0 z-0 pointer-events-none opacity-[0.04] mix-blend-screen" 
-          style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }}
-        />
+      {/* Grid Background */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-dots" 
+           style={{ maskImage: 'radial-gradient(circle at 50% 10%, black, transparent 80%)', WebkitMaskImage: 'radial-gradient(circle at 50% 10%, black, transparent 80%)' }} />
 
-        {/* ════════════════ NAV ════════════════ */}
-        <motion.nav 
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-[#070707]/90 backdrop-blur-xl border-b border-zinc-900 py-4" : "bg-transparent py-8"}`}
-        >
-          <div className="max-w-[90rem] mx-auto px-6 flex items-center justify-between">
-            <div className="flex items-center gap-3 group cursor-pointer">
-              <div className="size-10 bg-yellow-400 flex items-center justify-center rounded-sm rotate-3 group-hover:-rotate-3 transition-transform duration-500">
-                <Command className="size-5 text-black" />
-              </div>
-              <span className="text-2xl font-bebas tracking-widest text-white mt-1">PAIR-CODE</span>
+      {/* Ambient Flare */}
+      <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-yellow-400/5 blur-[150px] pointer-events-none z-0 mix-blend-screen" />
+
+      {/* Nav */}
+      <motion.nav 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "glass-panel border-b border-white/5 py-4" : "bg-transparent py-8"
+        }`}
+      >
+        <div className="max-w-[90rem] mx-auto px-6 lg:px-12 flex items-center justify-between">
+          <div className="flex items-center gap-3 cursor-pointer group">
+            <div className="size-10 bg-yellow-400 flex items-center justify-center rotate-3 group-hover:-rotate-3 transition-transform duration-500">
+              <Command className="size-5 text-black" />
             </div>
-            <div className="hidden md:flex items-center gap-12 font-mono-space text-xs font-bold text-zinc-400 uppercase tracking-widest">
-              {["Platform", "Process", "Community"].map((link) => (
-                <a key={link} href={`#${link.toLowerCase()}`} className="hover:text-yellow-400 transition-colors relative group">
-                  {link}
-                  <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full" />
-                </a>
-              ))}
-            </div>
+            <span className="font-bebas text-2xl tracking-widest text-white mt-1">TALENT_HUNT</span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-12 text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest">
+            <a href="#platform" className="hover:text-yellow-400 transition-colors">Platform</a>
+            <a href="#process" className="hover:text-yellow-400 transition-colors">Process</a>
+            <a href="#metrics" className="hover:text-yellow-400 transition-colors">Metrics</a>
+          </div>
+
+          <div className="flex items-center gap-6">
             <SignInButton mode="modal">
-              <Button className="bg-white text-black hover:bg-yellow-400 rounded-none px-8 h-12 font-mono-space text-xs font-bold uppercase tracking-widest border border-white hover:border-yellow-400 transition-all">
-                Log In <ArrowRight className="ml-3 size-4" />
-              </Button>
+              <button className="hidden sm:block text-xs font-mono font-bold uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">Log In</button>
             </SignInButton>
           </div>
-        </motion.nav>
+        </div>
+      </motion.nav>
 
-        <main className="relative z-10">
-          {/* ════════════════ HERO ════════════════ */}
-          <section className="relative w-full min-h-[100vh] flex flex-col justify-center overflow-hidden border-b border-zinc-900 pt-20">
-            {/* Background Marquee Ticker */}
-            <div className="absolute top-[35%] left-0 w-[200%] -rotate-6 opacity-[0.03] pointer-events-none z-0">
-              <div className="flex whitespace-nowrap marquee-content">
-                <span className="text-[15rem] leading-none font-bebas text-white mx-10">PAIR-CODE // PAIR-CODE //</span>
-                <span className="text-[15rem] leading-none font-bebas text-white mx-10">PAIR-CODE // PAIR-CODE //</span>
-              </div>
-            </div>
-            
-            <div className="max-w-[90rem] mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-12 relative z-10 py-20">
-                
-                {/* ─ Left: Editorial Typography ─ */}
-                <div className="flex-1 flex flex-col w-full relative">
-                  {/* Rotating Badge */}
-                  <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 1 }} className="absolute -top-12 -left-12 z-0 opacity-40 hidden md:block">
-                      <svg viewBox="0 0 200 200" className="w-[300px] h-[300px] animate-spin-slow">
-                        <path id="curve" fill="transparent" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" />
-                        <text className="font-mono-space text-[12px] font-bold fill-yellow-400 tracking-[0.25em]"><textPath href="#curve">THE NEXT GENERATION TECHNICAL INTERVIEW PLATFORM • </textPath></text>
-                      </svg>
-                  </motion.div>
+      {/* ════════════════ HERO EXTREME ════════════════ */}
+      <main className="relative z-10 min-h-screen flex items-center pt-24 pb-20" ref={containerRef}>
+        <div className="absolute top-[20%] left-0 w-[200%] -rotate-3 opacity-[0.02] pointer-events-none z-0 hidden lg:block">
+          <div className="flex whitespace-nowrap marquee-content">
+            <span className="text-[18rem] leading-none font-bebas text-white mx-10">EVALUATE // EXECUTE //</span>
+            <span className="text-[18rem] leading-none font-bebas text-white mx-10">EVALUATE // EXECUTE //</span>
+          </div>
+        </div>
 
-                  <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="relative z-10 flex flex-col">
-                      <motion.div variants={fadeUpVariants} className="flex items-center gap-4 mb-4">
-                        <Zap className="size-5 text-yellow-400" />
-                        <span className="font-mono-space text-xs font-bold tracking-[0.3em] text-zinc-400 uppercase">Elite Engineering</span>
-                      </motion.div>
-
-                      <motion.div variants={fadeUpVariants} className="flex flex-col mb-8">
-                        {/* Word 1 + Snippet */}
-                        <div className="flex items-end gap-6 h-[8rem] sm:h-[11rem] lg:h-[14rem]">
-                          <h1 className="font-bebas text-[9rem] sm:text-[13rem] lg:text-[16rem] leading-[0.8] text-white">CODE</h1>
-                          <span className="font-playfair italic font-medium text-6xl sm:text-8xl lg:text-9xl text-yellow-400 mb-6 sm:mb-10 lg:mb-14">Live.</span>
-                        </div>
-                        
-                        {/* Word 2 + 3 */}
-                        <div className="flex items-end gap-6 lg:ml-20 h-[7rem] sm:h-[10rem] lg:h-[12rem]">
-                          <span className="font-playfair italic font-medium text-5xl sm:text-7xl lg:text-8xl text-white mb-6 sm:mb-8 lg:mb-10">Hire</span>
-                          <h1 className="font-bebas text-[8rem] sm:text-[11rem] lg:text-[14rem] leading-[0.8] text-stroke-yellow">SMART.</h1>
-                        </div>
-                      </motion.div>
-
-                      <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mt-4 lg:mt-8 pl-1">
-                        <div className="hidden sm:block h-[2px] w-16 bg-yellow-400" />
-                        <p className="font-mono-space text-sm sm:text-base text-zinc-400 leading-relaxed max-w-md">
-                          Stop whiteboarding. Evaluate true capabilities in a real-world coding environment designed for unparalleled precision.
-                        </p>
-                      </motion.div>
-
-                      <motion.div variants={fadeUpVariants} className="mt-16 flex flex-wrap items-center gap-8">
-                        <SignInButton mode="modal">
-                            <Button size="lg" className="h-16 px-12 bg-yellow-400 text-black hover:bg-white rounded-none font-mono-space text-sm font-bold border-2 border-transparent transition-colors uppercase relative group">
-                              Start Action
-                              <ArrowRight className="ml-4 size-5 transform group-hover:translate-x-2 transition-transform" />
-                            </Button>
-                        </SignInButton>
-                        <div className="hidden sm:flex items-center gap-4">
-                            <div className="flex -space-x-4">
-                              {[1,2,3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-12 h-12 rounded-full border-2 border-[#070707] grayscale contrast-125" alt="user" />)}
-                              <div className="w-12 h-12 rounded-full border-2 border-[#070707] bg-[#1a1a1a] flex items-center justify-center font-mono-space text-xs font-bold text-yellow-400">+12k</div>
-                            </div>
-                            <span className="font-mono-space text-xs text-zinc-500 uppercase font-bold tracking-widest">Peers</span>
-                        </div>
-                      </motion.div>
-                  </motion.div>
+        <div className="max-w-[90rem] mx-auto px-6 lg:px-12 w-full">
+          <motion.div 
+            style={{ y: heroY, opacity: heroOpacity }}
+            className="flex flex-col lg:flex-row items-center gap-16 lg:gap-8"
+          >
+            {/* ─ Left: Typography Mastery ─ */}
+            <div className="flex-1 w-full relative z-20">
+              <motion.div 
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="flex flex-col"
+              >
+                {/* Eyebrow */}
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="size-2 bg-yellow-400 animate-pulse rounded-full" />
+                  <span className="font-mono text-[10px] text-yellow-400 uppercase tracking-[0.3em] font-bold">
+                    [ REC ] System Online
+                  </span>
                 </div>
 
-                {/* ─ Right: Deconstructed Abstract Editor ─ */}
-                <div className="flex-1 w-full relative h-[500px] lg:h-[700px] hidden md:block" style={{ perspective: "1200px" }}>
-                    <motion.div 
-                      initial={{ rotateY: -15, rotateX: 10, opacity: 0, x: 100 }}
-                      animate={{ rotateY: -5, rotateX: 5, opacity: 1, x: 0 }}
-                      transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
-                      className="absolute top-10 lg:top-24 right-0 lg:-right-10 w-[500px] lg:w-[550px] bg-[#0c0c0c] border border-zinc-900 p-6 shadow-2xl z-10"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      {/* Editor Chrome */}
-                      <div className="flex items-center justify-between mb-8 border-b border-zinc-900 pb-4">
-                          <div className="flex gap-2">
-                            <div className="size-3 bg-zinc-800 rounded-none" />
-                            <div className="size-3 bg-zinc-700 rounded-none" />
-                            <div className="size-3 bg-yellow-400 rounded-none animate-pulse" />
-                          </div>
-                          <span className="font-mono-space text-[10px] text-zinc-500 tracking-widest uppercase">system_boot //</span>
-                      </div>
-                      
-                      {/* Code Snippet */}
-                      <div className="font-mono-space text-sm text-zinc-400 leading-loose space-y-1">
-                          <div><span className="text-yellow-400">import</span> {'{'} <span className="text-white font-bold">evaluateCandidate</span> {'}'} <span className="text-yellow-400">from</span> <span className="text-zinc-500">'@pair/core'</span>;</div>
-                          <br/>
-                          <div><span className="text-yellow-400">const</span> session = <span className="text-yellow-400">await</span> evaluateCandidate({'{'}</div>
-                          <div className="pl-6 group hover:translate-x-2 transition-transform cursor-crosshair">id: <span className="text-zinc-500">'cand_8891'</span>,</div>
-                          <div className="pl-6 group hover:translate-x-2 transition-transform cursor-crosshair">mode: <span className="text-zinc-500">'real-time'</span>,</div>
-                          <div className="pl-6 leading-loose">strictMode: <span className="text-yellow-400">true</span></div>
-                          <div>{'}'});</div>
-                          <br/>
-                          <div className="border-l-[3px] border-yellow-400 pl-6 py-3 mt-4 bg-yellow-400/5">
-                            <span className="text-white">console.log(</span>session.status<span className="text-white">);</span>
-                            <br/>
-                            <span className="text-white font-bold mt-2 block">{'>'} "VERIFIED_HIRE"</span>
-                            <div className="w-3 h-4 bg-yellow-400 mt-2 animate-pulse" />
-                          </div>
-                      </div>
-
-                      {/* Floating Video Overlay */}
-                      <motion.div 
-                        animate={{ y: [-15, 15, -15] }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -left-20 -bottom-20 w-[300px] bg-[#070707] border border-zinc-900 p-3 shadow-2xl z-20"
-                        style={{ transform: "translateZ(50px)" }}
-                      >
-                          <div className="relative aspect-video bg-zinc-900 border border-zinc-800 group">
-                            <div className="absolute inset-0 bg-cover bg-center grayscale contrast-125 hover:grayscale-0 transition-all duration-700" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2688&auto=format&fit=crop')" }}></div>
-                            <div className="absolute top-3 left-3 bg-yellow-400 text-black font-mono-space text-[9px] font-bold px-2 py-1 leading-none uppercase tracking-widest">
-                                REC // LIVE
-                            </div>
-                            <div className="absolute bottom-3 right-3 flex gap-1">
-                                <div className="size-6 border border-white/20 bg-black/50 backdrop-blur-md flex items-center justify-center">
-                                  <div className="size-2 bg-yellow-400 animate-pulse" />
-                                </div>
-                            </div>
-                          </div>
-                      </motion.div>
-
-                      {/* Floating Data Badge Overlay */}
-                      <motion.div 
-                        animate={{ y: [10, -10, 10] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                        className="absolute -top-10 -right-10 bg-yellow-400 p-4 border-2 border-[#070707] z-0 hidden lg:block shadow-2xl"
-                        style={{ transform: "translateZ(-30px)" }}
-                      >
-                          <div className="font-bebas text-4xl text-black leading-none uppercase">99.9%</div>
-                          <div className="font-mono-space text-[10px] text-black font-bold uppercase tracking-widest mt-1">Uptime SLA</div>
-                      </motion.div>
-                    </motion.div>
-                </div>
-            </div>
-          </section>
-
-          {/* ════════════════ STATS SOLID ════════════════ */}
-          <section className="border-b border-zinc-900 bg-[#070707] relative z-10 overflow-hidden">
-            {/* Massive typography behind stats */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
-               <span className="font-bebas text-[20rem] text-white">METRICS</span>
-            </div>
-            <div className="max-w-[90rem] mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-900 relative z-10">
-                {stats.map((stat, i) => (
-                  <div key={i} className="py-16 lg:py-20 text-center group cursor-default bg-[#070707] hover:bg-[#0c0c0c] transition-colors">
-                    <h3 className="font-bebas text-6xl md:text-8xl text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                      {stat.value}
-                    </h3>
-                    <p className="font-mono-space text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em] mt-2 group-hover:text-zinc-300">
-                      {stat.label}
-                    </p>
+                {/* Massive Typography Stack */}
+                <div className="flex flex-col leading-[0.85] mb-8">
+                  <h1 className="font-bebas text-[6rem] sm:text-[9rem] lg:text-[11xl] xl:text-[12rem] text-white tracking-normal">
+                    TESTING
+                  </h1>
+                  <div className="flex items-center gap-6 -mt-2 sm:-mt-6 lg:-mt-8">
+                    <span className="font-bodoni italic text-5xl sm:text-7xl lg:text-8xl xl:text-[8rem] text-yellow-400 glow-yellow lowercase">
+                      true
+                    </span>
+                    <h1 className="font-bebas text-[5.5rem] sm:text-[8rem] lg:text-[10rem] xl:text-[11rem] text-stroke-white opacity-40">
+                      SKILLS.
+                    </h1>
                   </div>
-                ))}
-            </div>
-          </section>
-
-          {/* ════════════════ FEATURES ════════════════ */}
-          <section id="platform" className="py-32 bg-[#0c0c0c] border-b border-zinc-900">
-            <div className="max-w-[90rem] mx-auto px-6">
-              <div className="mb-24 lg:flex items-end justify-between border-b border-zinc-900 pb-10">
-                <div>
-                  <h2 className="font-playfair italic text-5xl md:text-7xl lg:text-8xl text-white mb-2">Architectural</h2>
-                  <h2 className="font-bebas text-7xl md:text-9xl tracking-tight text-white leading-none">RAW <span className="text-yellow-400">POWER.</span></h2>
                 </div>
-                <div className="hidden lg:block pb-2 text-right">
-                  <p className="font-mono-space text-sm text-zinc-400 max-w-sm leading-relaxed">
-                    EVERYTHING YOU NEED TO ORCHESTRATE THE PERFECT TECHNICAL INTERVIEW WITHOUT BREAKING A SWEAT.
+
+                <p className="font-inter text-base sm:text-lg text-zinc-400 max-w-xl font-light leading-relaxed mb-12 pl-4 border-l border-zinc-800">
+                  Stop asking algorithmic riddles on a whiteboard. Watch them build, debug, and communicate in a live zero-latency coding environment powered by Stream, Judge0, and Liveblocks. <strong className="text-zinc-200 font-medium">The new standard for elite engineering teams.</strong>
+                </p>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                  <SignInButton mode="modal">
+                    <button className="h-16 w-full sm:w-auto px-10 bg-yellow-400 hover:bg-white text-black text-sm font-mono font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-4 group">
+                      Initialize Session
+                      <div className="size-6 bg-black flex items-center justify-center transition-transform group-hover:translate-x-1">
+                        <ChevronRight className="size-4 text-yellow-400 group-hover:text-white" />
+                      </div>
+                    </button>
+                  </SignInButton>
+                </div>
+                
+                <div className="mt-12 flex items-center gap-4">
+                  <div className="flex -space-x-3">
+                    {[1,2,3,4].map(i => (
+                      <img key={i} src={`https://i.pravatar.cc/100?img=${i+30}`} className="size-8 rounded-full border border-[#020202] grayscale" alt="user" />
+                    ))}
+                  </div>
+                  <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
+                    Joined by <span className="text-white font-bold">12,000+</span> engineers.
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* ─ Right: Dramatic Floating Composition ─ */}
+            <div className="flex-1 w-full relative h-[600px] lg:h-[800px] hidden md:block perspective-[2000px]">
+              <motion.div 
+                initial={{ opacity: 0, rotateY: 15, rotateX: 5, x: 100, scale: 0.9 }}
+                animate={{ opacity: 1, rotateY: -10, rotateX: 10, x: 0, scale: 1 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] transform-style-3d z-10"
+              >
+                {/* 1. Main Editor Window */}
+                <div className="absolute top-0 right-10 w-[600px] h-[500px] bg-[#0c0c0c] border border-zinc-800 shadow-2xl overflow-hidden box-glow" style={{ transform: "translateZ(-50px)" }}>
+                   {/* Header */}
+                   <div className="h-10 border-b border-zinc-800 bg-[#070707] flex items-center px-4 justify-between">
+                     <div className="flex gap-2">
+                       <div className="size-2.5 bg-zinc-700" />
+                       <div className="size-2.5 bg-zinc-700" />
+                       <div className="size-2.5 bg-zinc-700" />
+                     </div>
+                     <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">candidate_env.ts</span>
+                     <Target className="size-3 text-zinc-600" />
+                   </div>
+                   {/* Code Base */}
+                   <div className="p-6 font-mono text-[13px] leading-[1.8] text-zinc-400">
+                     <div><span className="text-yellow-400">#</span> Real-time execution environment</div>
+                     <br/>
+                     <div><span className="text-purple-400">import</span> {'{'} <span className="text-white">evaluate</span> {'}'} <span className="text-purple-400">from</span> <span className="text-green-400">'@core/metrics'</span>;</div>
+                     <br/>
+                     <div><span className="text-blue-400">const</span> <span className="text-yellow-200">sessionStatus</span> = <span className="text-purple-400">await</span> <span className="text-blue-200">evaluate</span>({'{'}</div>
+                     <div className="pl-6 hover:translate-x-1 transition-transform cursor-crosshair">candidateId: <span className="text-green-400">'uuid_9831'</span>,</div>
+                     <div className="pl-6 hover:translate-x-1 transition-transform cursor-crosshair">mode: <span className="text-green-400">'strict_execution'</span>,</div>
+                     <div className="pl-6">video_enabled: <span className="text-yellow-400">true</span></div>
+                     <div>{'}'});</div>
+                     <br/>
+                     <div className="border-l-2 border-yellow-400 pl-4 bg-yellow-400/5 py-3">
+                       <span className="text-pink-400">if</span> (sessionStatus === <span className="text-green-400">'SUCCESS'</span>) {'{'}
+                       <div className="pl-4">console.<span className="text-blue-200">log</span>(<span className="text-green-400">'HIRE.'</span>);</div>
+                       {'}'}
+                       <div className="w-2 h-4 bg-yellow-400 mt-2 animate-pulse" />
+                     </div>
+                   </div>
+                </div>
+
+                {/* 2. Floating Video Widget */}
+                <motion.div 
+                  animate={{ y: [-10, 10, -10] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-10 left-[-40px] w-[260px] bg-[#070707] border border-zinc-800 p-2 shadow-2xl z-30"
+                  style={{ transform: "translateZ(80px)" }}
+                >
+                  <div className="aspect-[4/5] relative bg-zinc-900 overflow-hidden group">
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop')] bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700" />
+                    {/* UI Overlay */}
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                       <div className="bg-red-500 text-white font-mono text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-widest flex items-center gap-1">
+                         <div className="size-1 bg-white rounded-full animate-pulse" /> Live
+                       </div>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+                      <div className="bg-black/60 backdrop-blur-md px-2 py-1 flex items-center gap-2 border border-white/10">
+                        <span className="font-mono text-[9px] text-white uppercase tracking-wider">Candidate</span>
+                        <Mic className="size-3 text-green-400" />
+                      </div>
+                      <div className="size-8 bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center p-1.5">
+                        <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=200&auto=format&fit=crop')] bg-cover bg-center border border-white/20" />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* 3. Floating Stats Badge */}
+                <motion.div 
+                  animate={{ y: [5, -5, 5] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute top-10 right-[-30px] bg-yellow-400 border border-black p-4 shadow-xl z-20"
+                  style={{ transform: "translateZ(40px)" }}
+                >
+                  <div className="flex items-center gap-3">
+                    <Zap className="size-6 text-black" />
+                    <div>
+                      <div className="font-bebas text-3xl text-black leading-none">46ms</div>
+                      <div className="font-mono text-[8px] text-black font-bold uppercase tracking-widest mt-0.5">Execution Speed</div>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </main>
+
+      {/* ════════════════ FEATURES BENTO ════════════════ */}
+      <section id="platform" className="py-32 relative z-10 border-t border-zinc-900 bg-[#020202]">
+        <div className="max-w-[90rem] mx-auto px-6 lg:px-12">
+          <div className="mb-20 grid lg:grid-cols-2 gap-8 items-end">
+             <div>
+               <h2 className="font-bodoni italic text-4xl sm:text-6xl text-zinc-500 mb-2">Uncompromising</h2>
+               <h2 className="font-bebas text-6xl sm:text-8xl tracking-normal text-white leading-none">
+                 TECHNICAL <span className="text-yellow-400 glow-yellow">ARSENAL.</span>
+               </h2>
+             </div>
+             <div className="flex justify-start lg:justify-end pb-2">
+               <p className="font-mono text-xs text-zinc-400 uppercase tracking-widest max-w-sm leading-relaxed border-l-2 border-yellow-400 pl-6">
+                 Everything you need to orchestrate the perfect technical interview without breaking a sweat.
+               </p>
+             </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+            {features.map((feat, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="group relative h-full"
+              >
+                <div className="h-full bg-[#070707] border border-zinc-900 hover:border-yellow-400/50 p-8 transition-colors duration-500 flex flex-col relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 rounded-bl-full" />
+                  
+                  <div className="size-12 bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-8 group-hover:bg-yellow-400 group-hover:border-yellow-400 transition-all duration-300">
+                    <feat.icon className="size-5 text-zinc-400 group-hover:text-black transition-colors" />
+                  </div>
+                  
+                  <h3 className="font-bebas text-3xl text-white mb-4 group-hover:text-yellow-400 transition-colors">
+                    {feat.title}
+                  </h3>
+                  
+                  <p className="font-inter text-sm text-zinc-500 leading-relaxed font-light mt-auto">
+                    {feat.desc}
                   </p>
                 </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {featureCards.map((feat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: i * 0.1 }}
-                  >
-                    <div className="group bg-[#070707] border border-zinc-900 p-10 h-full hover:border-yellow-400 transition-all cursor-default relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 rounded-bl-full" />
-                      
-                      <div className="size-14 bg-zinc-900 border border-zinc-800 group-hover:bg-yellow-400 group-hover:border-yellow-400 flex items-center justify-center mb-10 transition-colors duration-300">
-                        <feat.icon className="size-6 text-zinc-400 group-hover:text-black transition-colors duration-300" />
-                      </div>
-                      
-                      <h3 className="font-bebas text-4xl tracking-wide text-white mb-4 group-hover:text-yellow-400 transition-colors">
-                        {feat.title}
-                      </h3>
-                      
-                      <p className="font-mono-space text-xs tracking-wide text-zinc-500 leading-loose">
-                        {feat.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ════════════════ HOW IT WORKS ════════════════ */}
-          <section id="process" className="py-32 bg-[#070707] border-b border-zinc-900 relative">
-            <div className="max-w-[90rem] mx-auto px-6">
-              <div className="text-center mb-32">
-                <span className="font-mono-space text-xs font-bold tracking-[0.3em] text-yellow-400 uppercase block mb-6">Workflow</span>
-                <h2 className="font-bebas text-7xl md:text-9xl tracking-tight text-white">THE <span className="text-playfair italic font-medium text-yellow-400 lowercase text-[5rem] md:text-[7rem]">perfect</span> PROCESS</h2>
-              </div>
-              
-              <div className="grid lg:grid-cols-3 gap-16 lg:gap-8 max-w-[80rem] mx-auto relative">
-                <div className="hidden lg:block absolute top-[4.5rem] left-[15%] right-[15%] h-[1px] bg-zinc-800 z-0" />
-                {steps.map((step, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.2, duration: 0.6 }}
-                    className="relative z-10 flex flex-col items-center text-center"
-                  >
-                    <div className="bg-[#070707] px-6">
-                      <div className="font-bebas text-8xl md:text-9xl text-zinc-900 group-hover:text-zinc-800 transition-colors mb-4">{step.step}</div>
-                    </div>
-                    <div className="h-2 w-16 bg-yellow-400 mb-8" />
-                    <h3 className="font-bebas text-4xl tracking-wide text-white mb-4">{step.title}</h3>
-                    <p className="font-mono-space text-xs tracking-wide text-zinc-500 leading-loose max-w-xs">{step.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ════════════════ REVIEWS ════════════════ */}
-          <section id="community" className="py-32 bg-[#0c0c0c]">
-            <div className="max-w-[90rem] mx-auto px-6">
-              <div className="mb-20">
-                <h2 className="font-playfair italic text-6xl md:text-8xl text-white mb-4">What they say</h2>
-                <div className="h-[2px] w-32 bg-yellow-400" />
-              </div>
-              <div className="grid lg:grid-cols-3 gap-8">
-                {testimonials.map((t, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15, duration: 0.6 }}
-                    className="border border-zinc-900 bg-[#070707] p-10 flex flex-col justify-between hover:border-zinc-700 transition-colors"
-                  >
-                    <div className="mb-12">
-                      <Target className="size-8 text-yellow-400 mb-8" />
-                      <p className="font-playfair text-2xl md:text-3xl text-zinc-300 leading-relaxed italic">"{t.quote}"</p>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <div className="w-14 h-14 bg-zinc-900 border border-zinc-800 flex items-center justify-center font-bebas text-xl text-yellow-400">
-                        {t.avatar}
-                      </div>
-                      <div>
-                        <div className="font-mono-space text-sm font-bold text-white uppercase tracking-widest">{t.author}</div>
-                        <div className="font-mono-space text-[10px] text-zinc-500 uppercase tracking-widest mt-1">{t.role}</div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ════════════════ CTA ════════════════ */}
-          <section className="pt-40 pb-32 border-t border-zinc-900 bg-yellow-400 relative overflow-hidden">
-            {/* Massive background text */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08]">
-               <span className="font-bebas text-[30rem] text-black whitespace-nowrap">START NOW</span>
-            </div>
-            
-            <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-              <h2 className="font-bebas text-8xl md:text-[10rem] leading-[0.85] tracking-tight text-black mb-10">
-                READY TO <br/><span className="text-white font-playfair italic font-medium tracking-normal text-7xl md:text-[9rem]">Execute?</span>
-              </h2>
-              <p className="font-mono-space text-sm md:text-base font-bold mb-16 max-w-xl mx-auto text-zinc-900 leading-loose">
-                Skip the whiteboard. Evaluate true engineering skills in a real-world environment.
-              </p>
-              <SignInButton mode="modal">
-                <Button size="lg" className="h-[4.5rem] px-16 text-xs bg-black text-white hover:bg-white hover:text-black rounded-none uppercase font-mono-space font-bold tracking-[0.2em] border-2 border-black hover:scale-105 transition-all">
-                  Launch Platform
-                </Button>
-              </SignInButton>
-            </div>
-          </section>
-        </main>
-
-        {/* ════════════════ FOOTER ════════════════ */}
-        <footer className="border-t border-zinc-900 py-16 bg-[#070707]">
-          <div className="max-w-[90rem] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-zinc-500">
-            <div className="flex items-center gap-3">
-              <div className="size-8 bg-zinc-900 flex items-center justify-center border border-zinc-800">
-                <Command className="size-4 text-zinc-400" />
-              </div>
-              <span className="font-bebas tracking-widest text-white text-xl mt-1">PAIR-CODE</span>
-            </div>
-            <div className="flex gap-10 font-mono-space text-[10px] font-bold uppercase tracking-[0.2em]">
-              <a href="#" className="hover:text-yellow-400 transition-colors">Privacy</a>
-              <a href="#" className="hover:text-yellow-400 transition-colors">Terms</a>
-              <a href="#" className="hover:text-yellow-400 transition-colors">Twitter</a>
-              <a href="#" className="hover:text-yellow-400 transition-colors">GitHub</a>
-            </div>
-            <div className="font-mono-space text-[10px] font-bold uppercase tracking-[0.2em]">
-              © 2026 PAIR-CODE
-            </div>
+              </motion.div>
+            ))}
           </div>
-        </footer>
-      </div>
-    </>
+        </div>
+      </section>
+
+      {/* ════════════════ BIG STATS ════════════════ */}
+      <section id="metrics" className="py-32 bg-[#000000] border-y border-zinc-900 relative overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.02]">
+           <span className="font-bebas text-[25rem] text-white whitespace-nowrap">METRICS</span>
+        </div>
+        
+        <div className="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10 grid grid-cols-2 md:grid-cols-4 gap-12 sm:gap-8 divide-x-0 sm:divide-x divide-zinc-900">
+          {[ 
+            { label: "Video Engine", value: "Stream" },
+            { label: "Execution Engine", value: "Judge0" },
+            { label: "Real-time Sync", value: "Liveblocks" },
+            { label: "Supported Langs", value: "JS / PY / JAVA" }
+          ].map((stat, i) => (
+            <div key={i} className="text-center group">
+              <div className="font-bebas text-5xl md:text-6xl lg:text-7xl text-white group-hover:text-yellow-400 transition-colors mb-4">{stat.value}</div>
+              <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.2em]">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ════════════════ CTA ════════════════ */}
+      <section className="py-40 relative overflow-hidden bg-yellow-400">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay pointer-events-none" />
+        
+        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
+          <h2 className="font-bebas text-6xl sm:text-[8rem] lg:text-[10rem] tracking-tight mb-4 text-black leading-[0.85]">
+            READY TO <br/> <span className="font-bodoni italic text-5xl sm:text-[7rem] lg:text-[9rem] tracking-normal text-white">Execute?</span>
+          </h2>
+          <p className="font-mono text-xs sm:text-sm text-black font-bold uppercase tracking-widest max-w-xl mx-auto mb-12 mt-8">
+            Join thousands of elite engineering teams using TalentHunt to find and hire the best developers.
+          </p>
+          <SignInButton mode="modal">
+            <button className="h-16 px-12 bg-black hover:bg-white text-white hover:text-black text-sm font-mono font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-4 mx-auto group border-2 border-black hover:scale-105">
+              Launch Platform <ChevronRight className="size-5" />
+            </button>
+          </SignInButton>
+        </div>
+      </section>
+
+      {/* ════════════════ FOOTER ════════════════ */}
+      <footer className="py-12 bg-[#020202]">
+        <div className="max-w-[90rem] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="size-6 bg-zinc-900 flex items-center justify-center">
+              <Command className="size-3 text-zinc-500" />
+            </div>
+            <span className="font-bebas text-lg tracking-widest text-zinc-400 mt-1">TALENT_HUNT</span>
+          </div>
+          
+          <div className="flex items-center gap-8 font-mono text-[10px] text-zinc-600 font-bold uppercase tracking-widest">
+            <a href="#" className="hover:text-yellow-400 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-yellow-400 transition-colors">Terms</a>
+            <a href="#" className="hover:text-yellow-400 transition-colors">Twitter</a>
+            <a href="#" className="hover:text-white transition-colors">GitHub</a>
+          </div>
+          
+          <div className="font-mono text-[10px] text-zinc-700 uppercase tracking-widest">
+            &copy; 2026 TALENT_HUNT INC.
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

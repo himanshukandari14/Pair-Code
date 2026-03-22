@@ -39,12 +39,29 @@ function DashboardPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#070707] text-zinc-100 font-sans selection:bg-yellow-400 selection:text-black relative overflow-hidden">
-        {/* Subtle Matte Background Pattern */}
-        <div 
-          className="fixed inset-0 z-0 pointer-events-none opacity-[0.04] mix-blend-screen" 
-          style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }}
-        />
+      <div className="min-h-screen bg-[#020202] text-zinc-100 font-inter selection:bg-yellow-400 selection:text-black relative overflow-hidden">
+        <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Bodoni+Moda:ital,opsz,wght@1,6..122,400;1,6..122,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+          
+          .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.02em; }
+          .font-bodoni { font-family: 'Bodoni Moda', serif; }
+          .font-inter { font-family: 'Inter', sans-serif; }
+          .font-mono { font-family: 'JetBrains Mono', monospace; }
+          
+          .bg-dots {
+            background-size: 32px 32px;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+          }
+        `}
+        </style>
+
+        {/* Grid Background */}
+        <div className="fixed inset-0 pointer-events-none z-0 bg-dots" 
+             style={{ maskImage: 'radial-gradient(circle at 50% 10%, black, transparent 80%)', WebkitMaskImage: 'radial-gradient(circle at 50% 10%, black, transparent 80%)' }} />
+
+        {/* Ambient Flare */}
+        <div className="fixed top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-yellow-400/5 blur-[150px] pointer-events-none z-0 mix-blend-screen" />
         
         <div className="relative z-10 w-full pb-32">
           <Navbar />

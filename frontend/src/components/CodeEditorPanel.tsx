@@ -168,16 +168,16 @@ function CodeEditorPanel({
   }, []);
 
   return (
-    <div className="h-full bg-black flex flex-col">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800/80 bg-black/30">
+    <div className="h-full bg-transparent flex flex-col">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#020202]">
         <div className="flex items-center gap-3">
           <img
             src={LANGUAGE_CONFIG[selectedLanguage].icon}
             alt={LANGUAGE_CONFIG[selectedLanguage].name}
-            className="size-5"
+            className="size-5 filter grayscale contrast-125"
           />
           <select
-            className="bg-zinc-900/80 border border-zinc-700/50 rounded-lg px-3 py-1.5 text-sm text-zinc-300 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50"
+            className="bg-black border border-white/10 rounded-none px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-widest text-zinc-300 focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400"
             value={selectedLanguage}
             onChange={onLanguageChange}
           >
@@ -190,19 +190,19 @@ function CodeEditorPanel({
         </div>
 
         <button
-          className="inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium px-4 py-2 bg-emerald-500/90 text-white hover:bg-emerald-500 transition-all disabled:opacity-50 shadow-lg shadow-emerald-500/20"
+          className="inline-flex items-center justify-center gap-2 rounded-none font-mono font-bold uppercase tracking-[0.2em] text-[10px] px-6 py-2 bg-yellow-400 text-black hover:bg-yellow-500 transition-all disabled:opacity-50 shadow-[0_0_15px_rgba(250,204,21,0.2)]"
           disabled={isRunning}
           onClick={onRunCode}
         >
           {isRunning ? (
             <>
               <Loader2Icon className="size-4 animate-spin" />
-              Running...
+              EXECUTING
             </>
           ) : (
             <>
-              <PlayIcon className="size-4" />
-              Run Code
+              <PlayIcon className="size-4 fill-black" />
+              RUN CODE
             </>
           )}
         </button>
