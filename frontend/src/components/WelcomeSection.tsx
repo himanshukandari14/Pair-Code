@@ -7,16 +7,16 @@ type WelcomeSectionProps = {
 
 function WelcomeSection({ onCreateSession }: WelcomeSectionProps) {
   return (
-    <section className="bg-black py-8">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <section className="bg-[#070707] py-16 border-b border-zinc-900">
+      <div className="max-w-[90rem] mx-auto px-6">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-semibold text-zinc-100 tracking-tight">Dashboard</h1>
-            <p className="text-zinc-500 text-sm mt-1">Manage your active and past rooms</p>
+            <h1 className="font-playfair italic text-3xl sm:text-5xl lg:text-6xl text-white mb-2">Welcome Back.</h1>
+            <h2 className="font-bebas text-6xl sm:text-8xl tracking-tight text-white leading-none">COMMAND <span className="text-yellow-400">CENTER</span></h2>
           </div>
-          <Button variant="default" className="rounded-full px-6 flex items-center gap-2 h-11" onClick={onCreateSession}>
-            <PlusIcon className="size-4" />
-            New room
+          <Button onClick={onCreateSession} className="rounded-none bg-yellow-400 text-black hover:bg-white hover:text-black font-mono-space text-sm font-bold tracking-[0.2em] uppercase border-2 border-transparent px-8 h-14 transition-colors group">
+            <PlusIcon className="mr-3 size-5" />
+            New Session
           </Button>
         </div>
       </div>

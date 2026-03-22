@@ -34,30 +34,41 @@ function DashboardPage() {
 
   const isUserInSession = (session: Session) => {
     if (!user?.id) return false;
-
     return session.host?.clerkId === user.id || session.participant?.clerkId === user.id;
   };
 
   return (
     <>
-      <div className="min-h-screen bg-black text-zinc-100">
-        <Navbar />
-        <WelcomeSection onCreateSession={() => setShowCreateModal(true)} />
+      <div className="min-h-screen bg-[#070707] text-zinc-100 font-sans selection:bg-yellow-400 selection:text-black relative overflow-hidden">
+        {/* Subtle Matte Background Pattern */}
+        <div 
+          className="fixed inset-0 z-0 pointer-events-none opacity-[0.04] mix-blend-screen" 
+          style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }}
+        />
+        
+        <div className="relative z-10 w-full pb-32">
+          <Navbar />
+          <WelcomeSection onCreateSession={() => setShowCreateModal(true)} />
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <StatsCards
-              activeSessionsCount={activeSessions.length}
-              recentSessionsCount={recentSessions.length}
-            />
-            <ActiveSessions
-              sessions={activeSessions}
-              isLoading={loadingActiveSessions}
-              isUserInSession={isUserInSession}
-            />
+          <div className="max-w-[90rem] mx-auto px-6 py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-16">
+              <div className="lg:col-span-1">
+                <StatsCards
+                  activeSessionsCount={activeSessions.length}
+                  recentSessionsCount={recentSessions.length}
+                />
+              </div>
+              <div className="lg:col-span-3">
+                <ActiveSessions
+                  sessions={activeSessions}
+                  isLoading={loadingActiveSessions}
+                  isUserInSession={isUserInSession}
+                />
+              </div>
+            </div>
+
+            <RecentSessions sessions={recentSessions} isLoading={loadingRecentSessions} />
           </div>
-
-          <RecentSessions sessions={recentSessions} isLoading={loadingRecentSessions} />
         </div>
       </div>
 

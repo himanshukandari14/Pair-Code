@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+@layer utilities {
+  .font-bebas { font-family: 'Bebas Neue', display; letter-spacing: 0.02em; }
+  .font-playfair { font-family: 'Playfair Display', serif; }
+  .font-mono-space { font-family: 'Space Mono', monospace; }
+  .text-stroke-yellow {
+    -webkit-text-stroke: 1.5px #facc15;
+    color: transparent;
+  }
+}
+
 @layer base {
   :root {
     --background: 240 10% 3.9%;
